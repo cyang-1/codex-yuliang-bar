@@ -3,7 +3,7 @@
 > 贴在 Codex Desktop 右侧的 Windows 余量提醒工具。
 
 <p align="center">
-  <img src="docs/images/hero.svg" alt="Codex 余量条预览" width="860">
+  <img src="docs/images/preview.png" alt="Codex 余量条预览" width="860">
 </p>
 
 Codex 余量条会在 Codex Desktop 处于前台时自动吸附到右侧，显示 5 小时会话余量和周限额余量。它基于 [Finesssee/Win-CodexBar](https://github.com/Finesssee/Win-CodexBar) 改造，并保留 [CodexBar](https://github.com/steipete/CodexBar) 的 provider 思路。

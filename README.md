@@ -5,7 +5,7 @@
 > 一个贴在 Codex Desktop 右侧的 Windows 余量提醒工具，用来快速查看 5 小时窗口和周限额。
 
 <p align="center">
-  <img src="docs/images/hero.svg" alt="Codex Usage Bar preview" width="860">
+  <img src="docs/images/preview.png" alt="Codex Usage Bar preview" width="860">
 </p>
 
 <p align="center">
@@ -89,10 +89,6 @@ The app is designed as a local Windows companion:
 - It does not intentionally log secrets or tokens.
 - It reads local Codex/account state only to derive usage display.
 - Release builds should avoid printing credential values in logs or UI.
-
-<p align="center">
-  <img src="docs/images/architecture.svg" alt="Architecture overview" width="780">
-</p>
 
 ## Development
 
