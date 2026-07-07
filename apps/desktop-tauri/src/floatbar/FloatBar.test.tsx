@@ -342,27 +342,28 @@ describe("FloatBar", () => {
     });
   });
 
-  it("polls refreshProvidersIfStale on the configured interval", async () => {
+  it("polls force refresh on the configured interval", async () => {
     vi.useFakeTimers();
     try {
       tauriMocks.getCachedProviders.mockResolvedValue([]);
       tauriMocks.getSettingsSnapshot.mockResolvedValue(settings());
-      // 60s minimum is enforced in FloatBar.tsx; use the floor here.
+      // The floatbar caps provider polling at 60s so external Codex quota resets
+      // are not hidden behind a long stale-cache window.
       await act(async () => {
-        renderFloatBar(bootstrap({ refreshIntervalSecs: 60 }));
+        renderFloatBar(bootstrap({ refreshIntervalSecs: 300 }));
       });
 
       // Initial tick fires synchronously on mount; useProviders is passive here
-      // so the floatbar does not double-request stale refreshes at startup.
+      // so the floatbar does not double-request refreshes at startup.
       await vi.waitFor(() => {
-        expect(tauriMocks.refreshProvidersIfStale).toHaveBeenCalledTimes(1);
+        expect(tauriMocks.refreshProviders).toHaveBeenCalledTimes(1);
       });
-      const initialCalls = tauriMocks.refreshProvidersIfStale.mock.calls.length;
+      const initialCalls = tauriMocks.refreshProviders.mock.calls.length;
 
-      // Advance the timer past the 60-second interval — the floatbar tick
+      // Advance the timer past the 60-second cap; the floatbar tick
       // should fire again.
       await vi.advanceTimersByTimeAsync(60_000);
-      expect(tauriMocks.refreshProvidersIfStale.mock.calls.length).toBeGreaterThan(
+      expect(tauriMocks.refreshProviders.mock.calls.length).toBeGreaterThan(
         initialCalls,
       );
     } finally {

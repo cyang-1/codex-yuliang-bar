@@ -11,7 +11,7 @@ import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useFormattedResetTime } from "../hooks/useFormattedResetTime";
 import { useProviders } from "../hooks/useProviders";
-import { getSettingsSnapshot, refreshProvidersIfStale } from "../lib/tauri";
+import { getSettingsSnapshot, refreshProviders } from "../lib/tauri";
 import type {
   BootstrapState,
   ProviderUsageSnapshot,
@@ -180,9 +180,10 @@ export default function FloatBar({ state }: { state: BootstrapState }) {
   const [settings, setSettings] = useState<SettingsSnapshot>(state.settings);
 
   useEffect(() => {
-    const intervalMs = Math.max(60_000, settings.refreshIntervalSecs * 1000);
+    const requestedMs = settings.refreshIntervalSecs * 1000;
+    const intervalMs = Math.max(15_000, Math.min(60_000, requestedMs));
     const tick = () => {
-      void refreshProvidersIfStale().catch(() => {});
+      void refreshProviders().catch(() => {});
     };
     tick();
     const id = setInterval(tick, intervalMs);
